@@ -8,5 +8,5 @@ fi
 
 if test ! $(command -v nvm)
 then
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+  /bin/bash -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash"
 fi
