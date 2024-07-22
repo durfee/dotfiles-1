@@ -7,11 +7,11 @@
 # altered from _fink
 
 _brew_all_formulae() {
-  formulae=(`brew search`)
+  formulae=($(brew search))
 }
 
 _brew_installed_formulae() {
-  installed_formulae=(`brew list`)
+  installed_formulae=($(brew list))
 }
 
 local -a _1st_arguments
@@ -49,7 +49,7 @@ _arguments \
   '(--cache)--cache[brew cache]' \
   '*:: :->subcmds' && return 0
 
-if (( CURRENT == 1 )); then
+if ((CURRENT == 1)); then
   _describe -t commands "brew subcommand" _1st_arguments
   return
 fi
@@ -58,22 +58,22 @@ case "$words[1]" in
   list)
     _arguments \
       '(--unbrewed)--unbrewed[files in brew --prefix not controlled by brew]' \
-      '1: :->forms' &&  return 0
-      
-      if [[ "$state" == forms ]]; then
-        _brew_installed_formulae
-        _requested installed_formulae expl 'installed formulae' compadd -a installed_formulae
-      fi
+      '1: :->forms' && return 0
+
+    if [[ "$state" == forms ]]; then
+      _brew_installed_formulae
+      _requested installed_formulae expl 'installed formulae' compadd -a installed_formulae
+    fi
   ;;
-  install|home|log|info)
+  install | home | log | info)
     _brew_all_formulae
     _wanted formulae expl 'all formulae' compadd -a formulae
-  ;;
-  remove|edit|xo)
+    ;;
+  remove | edit | xo)
     _brew_installed_formulae
     _wanted installed_formulae expl 'installed formulae' compadd -a installed_formulae
-  ;;
+    ;;
   bundle)
-    _describe 'values' _bundle_arguments
+  _describe 'values' _bundle_arguments
   ;;
 esac
